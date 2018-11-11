@@ -10,6 +10,10 @@ public class AudioProcessor implements Runnable {
     private static final String TAG = AudioProcessor.class.getCanonicalName();
 
     private static final int[] SAMPLE_RATES = {44100, 22050, 16000, 11025, 8000};
+    //public static final int MIN_FREQ = 50;
+    //public static final int MAX_FREQ = 500;
+    public static final int MIN_FREQ = 65;
+    public static final int MAX_FREQ = 660;
 
 
     public interface PitchDetectionListener {
@@ -72,7 +76,7 @@ public class AudioProcessor implements Runnable {
 
                 if (intensity >= 50 && zeroCrossingCount(buffer) <= maxZeroCrossing) {
 
-                    float freq = getPitch(buffer, read / 4, read, sampleRate, 50, 500);
+                    float freq = getPitch(buffer, read / 4, read, sampleRate, MIN_FREQ, MAX_FREQ);
                     if (Math.abs(freq - mLastComputedFreq) <= 5f) {
                         mPitchDetectionListener.onPitchDetected(freq, intensity);
                     }

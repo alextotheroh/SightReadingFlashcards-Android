@@ -18,7 +18,6 @@ import java.util.List;
 public class Tuning {
 
     private static final String FREQUENCY_TO_NOTE_MAPPING_FILE = "frequency-to-note-mapping.csv";
-    private static final int NUMBER_OF_PITCHES = 108;
 
     String name;
     ArrayList<Pitch> pitches;
@@ -67,12 +66,9 @@ public class Tuning {
 
             List<String[]> allCsvRows = reader.readAll();
 
-            Log.e("~~~~~~~allRowsCount", String.valueOf(allCsvRows.size()));
-
             for (String[] row : allCsvRows) {
                 // nextLine[] is an array of values from the line
                 // note   modifier   number   frequency
-                Log.e("current csv line:", row[0] + " " + row[1] + " " + row[2] + " " + row[3]);
                 pitches.add(
                     new Pitch(
                         row[0].trim(),
@@ -82,14 +78,26 @@ public class Tuning {
                 );
             }
         } catch(Exception e){
-            Log.e("~~~~caught an exception", e.getMessage());
             e.printStackTrace();
             Toast.makeText(context, "The specified file was not found", Toast.LENGTH_SHORT).show();
         }
 
-        Log.e("~~~~~~~~~~pitcheslength", String.valueOf(pitches.size()));
-        return pitches;
+        return removeOutOfBandPitches(pitches);
     }
 
+    // using public constants in AudioProcessor, remove notes that have frequencies outside of reliable detection range
+    private static ArrayList<Pitch> removeOutOfBandPitches(ArrayList<Pitch> pitches) {
+
+        ArrayList<Pitch> filteredPitches = new ArrayList<>();
+
+        for (Pitch p : pitches) {
+            if (p.frequency < AudioProcessor.MAX_FREQ ||
+                    p.frequency > AudioProcessor.MIN_FREQ) {
+                filteredPitches.add(p);
+            }
+        }
+
+        return filteredPitches;
+    }
 
 }
