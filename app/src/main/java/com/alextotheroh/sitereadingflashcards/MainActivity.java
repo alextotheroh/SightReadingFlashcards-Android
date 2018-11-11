@@ -1,14 +1,13 @@
 package com.alextotheroh.sitereadingflashcards;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.PowerManager;
 import android.widget.TextView;
 
+import com.alextotheroh.sitereadingflashcards.audio.DetectedPitchesBuffer;
 import com.alextotheroh.sitereadingflashcards.audio.Pitch;
 import com.alextotheroh.sitereadingflashcards.audio.calculators.AudioCalculator;
 import com.alextotheroh.sitereadingflashcards.audio.core.Callback;
@@ -26,9 +25,17 @@ public class MainActivity extends Activity {
     private TextView textDecibel;
     private TextView textFrequency;
     private TextView textClosestPitch;
+    private TextView textPerformedPitch;
+    private TextView textPitchesBuffer;
 
-    private ArrayList<Pitch> pitches;
+    private ArrayList<Pitch> detectablePitches;
+    private DetectedPitchesBuffer detectedPitchesBuffer = new DetectedPitchesBuffer();
+
     private Pitch closestPitch = new Pitch("C", "n", 4, 261.63);
+
+    // the performed pitch is different than the detected pitch because we require that the user
+    // sustain the performed pitch for some period of time.  This is the purpose of the detectedPitchesBuffer.
+    private Pitch performedPitch = new Pitch("C", "n", 4, 261.63);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +47,14 @@ public class MainActivity extends Activity {
         audioCalculator = new AudioCalculator();
         handler = new Handler(Looper.getMainLooper());
 
-        textAmplitude = (TextView) findViewById(R.id.textAmplitude);
-        textDecibel = (TextView) findViewById(R.id.textDecibel);
-        textFrequency = (TextView) findViewById(R.id.textFrequency);
-        textClosestPitch = (TextView) findViewById(R.id.textClosestPitch);
+        textAmplitude = findViewById(R.id.textAmplitude);
+        textDecibel = findViewById(R.id.textDecibel);
+        textFrequency = findViewById(R.id.textFrequency);
+        textClosestPitch = findViewById(R.id.textClosestPitch);
+        textPerformedPitch = findViewById(R.id.textPerformedPitch);
+        textPitchesBuffer = findViewById(R.id.textPitchesBuffer);
 
-        pitches = Pitch.getPitchArrayFromCSV(this, getAssets());
+        detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
     }
 
     private Callback callback = new Callback() {
@@ -64,12 +73,19 @@ public class MainActivity extends Activity {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    closestPitch = Pitch.getClosestPitchForFrequency(frequency, pitches);
+                    closestPitch = Pitch.getClosestPitchForFrequency(frequency, detectablePitches);
+                    detectedPitchesBuffer.add(closestPitch);
 
                     textAmplitude.setText(amp);
                     textDecibel.setText(db);
                     textFrequency.setText(hz);
                     textClosestPitch.setText(closestPitch.toString());
+                    textPitchesBuffer.setText(detectedPitchesBuffer.toString());
+
+                    if (detectedPitchesBuffer.pitchWasPerformed()) {
+                        performedPitch = closestPitch.copy();
+                        textPerformedPitch.setText(performedPitch.toString());
+                    }
                 }
             });
         }

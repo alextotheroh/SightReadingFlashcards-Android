@@ -72,4 +72,33 @@ public class Pitch {
         return pitches;
     }
 
+    public Pitch copy() {
+        return new Pitch(this.note, this.modifier, this.number, this.frequency);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null)
+            return false;
+        if (getClass() != other.getClass())
+            return false;
+
+        return (
+            this.frequency == ((Pitch)other).frequency &&
+            this.modifier.equals(((Pitch)other).modifier) &&
+            this.note.equals(((Pitch)other).note) &&
+            this.number == ((Pitch)other).number
+        );
+    }
+
+    @Override
+    public int hashCode() {
+        return (
+            this.note.hashCode() +
+            this.modifier.hashCode() +
+            this.number +
+            (int)(this.frequency * 1000)
+        );
+    }
+
 }

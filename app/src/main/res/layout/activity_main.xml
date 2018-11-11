@@ -41,12 +41,32 @@
         android:id="@+id/textClosestPitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textDecibel"
+        android:layout_below="@+id/textFrequency"
         android:fontFamily="sans-serif-thin"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
         android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textPerformedPitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textClosestPitch"
+        android:fontFamily="sans-serif-thin"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textPitchesBuffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textPerformedPitch"
+        android:fontFamily="sans-serif-thin"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
 
 
 
