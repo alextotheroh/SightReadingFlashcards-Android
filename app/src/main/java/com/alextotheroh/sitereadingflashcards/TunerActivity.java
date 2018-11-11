@@ -166,7 +166,7 @@ public class TunerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        mTuning = Tuning.getTuning(this);
+        mTuning = Tuning.getTuning(this, getAssets());
 
         mNeedleView = (NeedleView) findViewById(R.id.pitch_needle_view);
         mNeedleView.setTickLabel(-1.0F, "-100c");
