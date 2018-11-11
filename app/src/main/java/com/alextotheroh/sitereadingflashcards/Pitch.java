@@ -2,10 +2,10 @@ package com.alextotheroh.sitereadingflashcards;
 
 public class Pitch {
     float frequency;
-    String name;
+    String note;
 
-    public Pitch(float frequency, String name) {
+    public Pitch(String note, String modifier, int number, float frequency) {
         this.frequency = frequency;
-        this.name = name;
+        this.note = note;
     }
 }

@@ -138,13 +138,13 @@ public class TuningView extends View {
         int height = getHeight();
 
 
-        for (int i = 0; i < mTuning.pitches.length; i++) {
+        for (int i = 0; i < mTuning.pitches.size(); i++) {
             if (i == mSelectedIndex) {
                 mPaint.setColor(mSelectedTextColor);
             } else {
                 mPaint.setColor(mNormalTextColor);
             }
-            String text = mTuning.pitches[i].name;
+            String text = mTuning.pitches.get(i).note;
             float textWidth = mPaint.measureText(text);
             mPaint.getTextBounds(text, 0, text.length(), mTempRect);
             canvas.drawText(text, mOffset + i * mTuningItemWidth + (mTuningItemWidth - textWidth) / 2f, (height + mTempRect.height()) / 2f, mPaint);

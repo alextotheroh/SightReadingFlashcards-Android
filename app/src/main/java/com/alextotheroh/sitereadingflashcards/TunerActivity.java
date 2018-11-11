@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,10 +16,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class TunerActivity extends AppCompatActivity {
 
@@ -119,7 +116,7 @@ public class TunerActivity extends AppCompatActivity {
             public void onPitchDetected(final float freq, double avgIntensity) {
 
                 final int index = mTuning.closestPitchIndex(freq);
-                final Pitch pitch = mTuning.pitches[index];
+                final Pitch pitch = mTuning.pitches.get(index);
                 double interval = 1200 * Utils.log2(freq / pitch.frequency); // interval in cents
                 final float needlePos = (float) (interval / 100);
                 final boolean goodPitch = Math.abs(interval) < 5.0;
@@ -169,11 +166,11 @@ public class TunerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        mTuning = Tuning.getTuning(this, Preferences.getString(this, getString(R.string.pref_tuning_key), getString(R.string.standard_tuning_val)));
+        mTuning = Tuning.getTuning(this);
 
         mNeedleView = (NeedleView) findViewById(R.id.pitch_needle_view);
         mNeedleView.setTickLabel(-1.0F, "-100c");
-        mNeedleView.setTickLabel(0.0F, String.format("%.02fHz", mTuning.pitches[0].frequency));
+        mNeedleView.setTickLabel(0.0F, String.format("%.02fHz", mTuning.pitches.get(0).frequency));
         mNeedleView.setTickLabel(1.0F, "+100c");
 
         int primaryTextColor = Utils.getAttrColor(this, android.R.attr.textColorPrimary);
@@ -183,7 +180,7 @@ public class TunerActivity extends AppCompatActivity {
 
 
         mFrequencyView = (TextView) findViewById(R.id.frequency_view);
-        mFrequencyView.setText(String.format("%.02fHz", mTuning.pitches[0].frequency));
+        mFrequencyView.setText(String.format("%.02fHz", mTuning.pitches.get(0).frequency));
 
         ImageView goodPitchView = (ImageView) findViewById(R.id.good_pitch_view);
         goodPitchView.setColorFilter(primaryTextColor);
@@ -205,7 +202,7 @@ public class TunerActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         mNeedleView.setTipPos(savedInstanceState.getFloat(STATE_NEEDLE_POS));
         int pitchIndex = savedInstanceState.getInt(STATE_PITCH_INDEX);
-        mNeedleView.setTickLabel(0.0F, String.format("%.02fHz", mTuning.pitches[pitchIndex].frequency));
+        mNeedleView.setTickLabel(0.0F, String.format("%.02fHz", mTuning.pitches.get(pitchIndex).frequency));
         mTuningView.setSelectedIndex(pitchIndex);
         mFrequencyView.setText(String.format("%.02fHz", savedInstanceState.getFloat(STATE_LAST_FREQ)));
     }
