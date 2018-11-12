@@ -1,5 +1,7 @@
 package com.alextotheroh.sitereadingflashcards.audio;
 
+import com.alextotheroh.sitereadingflashcards.Pitch;
+
 import java.util.ArrayList;
 
 import lombok.NoArgsConstructor;

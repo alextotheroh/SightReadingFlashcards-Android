@@ -8,7 +8,6 @@ import android.os.Looper;
 import android.widget.TextView;
 
 import com.alextotheroh.sitereadingflashcards.audio.DetectedPitchesBuffer;
-import com.alextotheroh.sitereadingflashcards.audio.Pitch;
 import com.alextotheroh.sitereadingflashcards.audio.calculators.AudioCalculator;
 import com.alextotheroh.sitereadingflashcards.audio.core.Callback;
 import com.alextotheroh.sitereadingflashcards.audio.core.Recorder;
@@ -27,9 +26,11 @@ public class MainActivity extends Activity {
     private TextView textClosestPitch;
     private TextView textPerformedPitch;
     private TextView textPitchesBuffer;
+    private TextView textNoteToPlay;
 
-    private ArrayList<Pitch> detectablePitches;
+    private ArrayList<Pitch> detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
     private DetectedPitchesBuffer detectedPitchesBuffer = new DetectedPitchesBuffer();
+    private PitchFlashcards pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
 
     private Pitch closestPitch = new Pitch("C", "n", 4, 261.63);
 
@@ -53,8 +54,7 @@ public class MainActivity extends Activity {
         textClosestPitch = findViewById(R.id.textClosestPitch);
         textPerformedPitch = findViewById(R.id.textPerformedPitch);
         textPitchesBuffer = findViewById(R.id.textPitchesBuffer);
-
-        detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
+        textNoteToPlay = findViewById(R.id.textNoteToPlay);
     }
 
     private Callback callback = new Callback() {
@@ -81,10 +81,13 @@ public class MainActivity extends Activity {
                     textFrequency.setText(hz);
                     textClosestPitch.setText(closestPitch.toString());
                     textPitchesBuffer.setText(detectedPitchesBuffer.toString());
+                    textNoteToPlay.setText("Play note: " + pitchFlashcards.getNextCard().toString());
 
                     if (detectedPitchesBuffer.pitchWasPerformed()) {
                         performedPitch = closestPitch.copy();
                         textPerformedPitch.setText(performedPitch.toString());
+
+                        // TODO if performed pitch was correct pitch, then play success sound and change flashcard
                     }
                 }
             });

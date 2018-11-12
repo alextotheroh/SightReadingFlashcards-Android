@@ -1,7 +1,8 @@
-package com.alextotheroh.sitereadingflashcards.audio;
+package com.alextotheroh.sitereadingflashcards;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.opencsv.CSVReader;
@@ -55,7 +56,7 @@ public class Pitch {
 
             for (String[] row : allCsvRows) {
                 // nextLine[] is an array of values from the line
-                // note   modifier   number   frequency
+                // note,   modifier,   number,   frequency
                 pitches.add(
                         new Pitch(
                                 row[0].trim(),
