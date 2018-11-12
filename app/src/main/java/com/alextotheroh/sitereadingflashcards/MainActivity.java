@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alextotheroh.sitereadingflashcards.audio.DetectedPitchesBuffer;
 import com.alextotheroh.sitereadingflashcards.audio.calculators.AudioCalculator;
@@ -28,15 +29,16 @@ public class MainActivity extends Activity {
     private TextView textPitchesBuffer;
     private TextView textNoteToPlay;
 
-    private ArrayList<Pitch> detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
+    private ArrayList<Pitch> detectablePitches;
     private DetectedPitchesBuffer detectedPitchesBuffer = new DetectedPitchesBuffer();
-    private PitchFlashcards pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
+    private PitchFlashcards pitchFlashcards;
 
     private Pitch closestPitch = new Pitch("C", "n", 4, 261.63);
 
     // the performed pitch is different than the detected pitch because we require that the user
     // sustain the performed pitch for some period of time.  This is the purpose of the detectedPitchesBuffer.
     private Pitch performedPitch = new Pitch("C", "n", 4, 261.63);
+    private Pitch pitchToPerform;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,10 @@ public class MainActivity extends Activity {
         textPerformedPitch = findViewById(R.id.textPerformedPitch);
         textPitchesBuffer = findViewById(R.id.textPitchesBuffer);
         textNoteToPlay = findViewById(R.id.textNoteToPlay);
+
+        detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
+        pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
+        pitchToPerform = pitchFlashcards.getNextCard();
     }
 
     private Callback callback = new Callback() {
@@ -81,18 +87,27 @@ public class MainActivity extends Activity {
                     textFrequency.setText(hz);
                     textClosestPitch.setText(closestPitch.toString());
                     textPitchesBuffer.setText(detectedPitchesBuffer.toString());
-                    textNoteToPlay.setText("Play note: " + pitchFlashcards.getNextCard().toString());
+                    textNoteToPlay.setText("Size of flashcards arr: " + pitchFlashcards.getPitchFlashcards().size() + "Play note: " + pitchToPerform.toString());
 
                     if (detectedPitchesBuffer.pitchWasPerformed()) {
                         performedPitch = closestPitch.copy();
                         textPerformedPitch.setText(performedPitch.toString());
 
                         // TODO if performed pitch was correct pitch, then play success sound and change flashcard
+                        if (performedPitch.equals(pitchToPerform)) {
+                            correctPitchWasPerformed();
+                        }
                     }
                 }
             });
         }
     };
+
+    private void correctPitchWasPerformed() {
+        Toast successToast = Toast.makeText(this, "Correct note was played!", Toast.LENGTH_SHORT);
+        successToast.show();
+        this.pitchToPerform = pitchFlashcards.getNextCard();
+    }
 
     @Override
     protected void onResume() {

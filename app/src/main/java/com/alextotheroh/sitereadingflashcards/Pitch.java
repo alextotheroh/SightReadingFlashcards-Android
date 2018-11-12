@@ -85,7 +85,6 @@ public class Pitch {
             return false;
 
         return (
-            this.frequency == ((Pitch)other).frequency &&
             this.modifier.equals(((Pitch)other).modifier) &&
             this.note.equals(((Pitch)other).note) &&
             this.number == ((Pitch)other).number
@@ -97,8 +96,7 @@ public class Pitch {
         return (
             this.note.hashCode() +
             this.modifier.hashCode() +
-            this.number +
-            (int)(this.frequency * 1000)
+            this.number
         );
     }
 

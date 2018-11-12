@@ -16,12 +16,9 @@ public class PitchFlashcards {
 
     @Getter
     private ArrayList<Pitch> pitchFlashcards;
-    @Getter
-    private Pitch currentFlashcard;
 
     public PitchFlashcards(ArrayList<Pitch> pitches) {
         this.pitchFlashcards = pitches;
-        this.currentFlashcard = getNextCard();
     }
 
     public Pitch getNextCard() {
@@ -41,7 +38,7 @@ public class PitchFlashcards {
                     pitchFlashcards.add(detectablePitches.get(i));
                     return new PitchFlashcards(pitchFlashcards);
                 } else {
-                    pitchFlashcards.add(pitchFlashcards.get(i));
+                    pitchFlashcards.add(detectablePitches.get(i));
                 }
 
             } else { // not yet in range
