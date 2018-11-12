@@ -1,4 +1,4 @@
-# SiteReadingFlashcards
+# SiteReadingFlashcards-Android
 
 ## Sources
 ### Code has been taken from or inspired by the following projects:
