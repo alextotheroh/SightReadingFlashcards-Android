@@ -73,6 +73,30 @@ public class Pitch {
         return pitches;
     }
 
+    public static int getDrawableResourceId(Pitch p, Context context) {
+        String filePathNoteModifier;
+
+        switch (p.getModifier()) {
+            case "n":
+                filePathNoteModifier = "";
+                break;
+            case "s":
+                filePathNoteModifier = "sharp";
+            case "f":
+                filePathNoteModifier = "flat";
+            default:
+                filePathNoteModifier = "INVALID";
+        }
+
+        if (filePathNoteModifier.equals("INVALID")) {
+            throw new RuntimeException("failed to get image file path modifier for pitch- unexpected value for pitch.getModifier for pitch: " + p.toString());
+        }
+
+        String drawableName =  p.getNote() + filePathNoteModifier + p.getNumber();
+
+        return context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
+    }
+
     public Pitch copy() {
         return new Pitch(this.note, this.modifier, this.number, this.frequency);
     }

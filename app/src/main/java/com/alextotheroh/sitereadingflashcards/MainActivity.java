@@ -5,7 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alextotheroh.sitereadingflashcards.audio.DetectedPitchesBuffer;
@@ -21,13 +21,7 @@ public class MainActivity extends Activity {
     private AudioCalculator audioCalculator;
     private Handler handler;
 
-    private TextView textAmplitude;
-    private TextView textDecibel;
-    private TextView textFrequency;
-    private TextView textClosestPitch;
-    private TextView textPerformedPitch;
-    private TextView textPitchesBuffer;
-    private TextView textNoteToPlay;
+    private ImageView noteImgView;
 
     private ArrayList<Pitch> detectablePitches;
     private DetectedPitchesBuffer detectedPitchesBuffer = new DetectedPitchesBuffer();
@@ -44,19 +38,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         recorder = new Recorder(callback);
         audioCalculator = new AudioCalculator();
         handler = new Handler(Looper.getMainLooper());
 
-        textAmplitude = findViewById(R.id.textAmplitude);
-        textDecibel = findViewById(R.id.textDecibel);
-        textFrequency = findViewById(R.id.textFrequency);
-        textClosestPitch = findViewById(R.id.textClosestPitch);
-        textPerformedPitch = findViewById(R.id.textPerformedPitch);
-        textPitchesBuffer = findViewById(R.id.textPitchesBuffer);
-        textNoteToPlay = findViewById(R.id.textNoteToPlay);
+        noteImgView = findViewById(R.id.noteImg);
 
         detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
         pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
@@ -82,16 +70,8 @@ public class MainActivity extends Activity {
                     closestPitch = Pitch.getClosestPitchForFrequency(frequency, detectablePitches);
                     detectedPitchesBuffer.add(closestPitch);
 
-                    textAmplitude.setText(amp);
-                    textDecibel.setText(db);
-                    textFrequency.setText(hz);
-                    textClosestPitch.setText(closestPitch.toString());
-                    textPitchesBuffer.setText(detectedPitchesBuffer.toString());
-                    textNoteToPlay.setText("Size of flashcards arr: " + pitchFlashcards.getPitchFlashcards().size() + "Play note: " + pitchToPerform.toString());
-
                     if (detectedPitchesBuffer.pitchWasPerformed()) {
                         performedPitch = closestPitch.copy();
-                        textPerformedPitch.setText(performedPitch.toString());
 
                         // TODO if performed pitch was correct pitch, then play success sound and change flashcard
                         if (performedPitch.equals(pitchToPerform)) {
