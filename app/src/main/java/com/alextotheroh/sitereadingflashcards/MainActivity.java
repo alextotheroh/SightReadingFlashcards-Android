@@ -5,6 +5,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -22,6 +25,7 @@ public class MainActivity extends Activity {
     private Handler handler;
 
     private ImageView noteImgView;
+    private ImageView sheetMusicImageView;
 
     private ArrayList<Pitch> detectablePitches;
     private DetectedPitchesBuffer detectedPitchesBuffer = new DetectedPitchesBuffer();
@@ -45,6 +49,16 @@ public class MainActivity extends Activity {
         handler = new Handler(Looper.getMainLooper());
 
         noteImgView = findViewById(R.id.noteImg);
+        sheetMusicImageView = findViewById(R.id.sheetMusicBackground);
+
+        sheetMusicImageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                sheetMusicImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                setNoteImageViewSize(sheetMusicImageView.getMeasuredWidth(), sheetMusicImageView.getMeasuredHeight());
+            }
+        });
 
         detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
         pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
@@ -87,6 +101,25 @@ public class MainActivity extends Activity {
         Toast successToast = Toast.makeText(this, "Correct note was played!", Toast.LENGTH_SHORT);
         successToast.show();
         this.pitchToPerform = pitchFlashcards.getNextCard();
+    }
+
+    private void setNoteImageViewSize(int sheetMusicImgWidth, int sheetMusicImgHeight) {
+        final double sheetMusicWidthToNoteImgWidthRatio = 58d/604d;
+        int noteImgWidth = (int)Math.round((double)sheetMusicImgWidth * sheetMusicWidthToNoteImgWidthRatio);
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        int noteImgViewId = R.id.noteImg;
+        int sheetMusicImgId = R.id.sheetMusicBackground;
+
+        // reconnect starts and ends to try and center horizontally again, resizing seems to break it
+        constraintSet.constrainWidth(noteImgViewId, noteImgWidth);
+        constraintSet.constrainHeight(noteImgViewId, sheetMusicImgHeight);
+        constraintSet.connect(noteImgViewId, ConstraintSet.BOTTOM, sheetMusicImgId, ConstraintSet.BOTTOM);
+        constraintSet.connect(noteImgViewId, ConstraintSet.START, sheetMusicImgId, ConstraintSet.START);
+        constraintSet.connect(noteImgViewId, ConstraintSet.END, sheetMusicImgId, ConstraintSet.END);
+
+        ConstraintLayout rootLayout = findViewById(R.id.root);
+        constraintSet.applyTo(rootLayout);
     }
 
     @Override
