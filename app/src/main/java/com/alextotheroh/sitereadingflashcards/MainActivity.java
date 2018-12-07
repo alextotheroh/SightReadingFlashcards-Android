@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import com.alextotheroh.sitereadingflashcards.audio.core.Callback;
 import com.alextotheroh.sitereadingflashcards.audio.core.Recorder;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity {
 
@@ -63,6 +66,8 @@ public class MainActivity extends Activity {
         detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
         pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
         pitchToPerform = pitchFlashcards.getNextCard();
+        Log.i(TAG, "pitch to perform is: " + pitchToPerform.toString());
+        updateNoteImage();
     }
 
     private Callback callback = new Callback() {
@@ -91,6 +96,7 @@ public class MainActivity extends Activity {
                         if (performedPitch.equals(pitchToPerform)) {
                             correctPitchWasPerformed();
                         }
+                        //TODO if wrong pitch was performed, play buzzer sound, display if flat or sharp
                     }
                 }
             });
@@ -101,6 +107,7 @@ public class MainActivity extends Activity {
         Toast successToast = Toast.makeText(this, "Correct note was played!", Toast.LENGTH_SHORT);
         successToast.show();
         this.pitchToPerform = pitchFlashcards.getNextCard();
+        updateNoteImage();
     }
 
     private void setNoteImageViewSize(int sheetMusicImgWidth, int sheetMusicImgHeight) {
@@ -120,6 +127,14 @@ public class MainActivity extends Activity {
 
         ConstraintLayout rootLayout = findViewById(R.id.root);
         constraintSet.applyTo(rootLayout);
+    }
+
+    private void updateNoteImage() {
+        noteImgView.setImageResource(
+            pitchToPerform.getDrawableResourceId(this.getApplicationContext())
+        );
+        setNoteImageViewSize(sheetMusicImageView.getMeasuredWidth(), sheetMusicImageView.getMeasuredHeight());
+        Log.i(TAG, "pitch to perform is: " + pitchToPerform.toString());
     }
 
     @Override

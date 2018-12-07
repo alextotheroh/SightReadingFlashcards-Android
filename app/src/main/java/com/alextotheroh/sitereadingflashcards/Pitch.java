@@ -73,28 +73,36 @@ public class Pitch {
         return pitches;
     }
 
-    public static int getDrawableResourceId(Pitch p, Context context) {
+    public int getDrawableResourceId(Context context) {
         String filePathNoteModifier;
 
-        switch (p.getModifier()) {
+        switch (this.getModifier()) {
             case "n":
                 filePathNoteModifier = "";
                 break;
             case "s":
                 filePathNoteModifier = "sharp";
+                break;
             case "f":
                 filePathNoteModifier = "flat";
+                break;
             default:
                 filePathNoteModifier = "INVALID";
         }
 
         if (filePathNoteModifier.equals("INVALID")) {
-            throw new RuntimeException("failed to get image file path modifier for pitch- unexpected value for pitch.getModifier for pitch: " + p.toString());
+            throw new RuntimeException("failed to get image file path modifier for pitch- unexpected value for pitch.getModifier for pitch: " + this.toString());
         }
 
-        String drawableName =  p.getNote() + filePathNoteModifier + p.getNumber();
+        String drawableName =  this.getNote().toLowerCase() + filePathNoteModifier + this.getNumber();
 
-        return context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
+        int drawableId = context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
+
+        if (drawableId == 0) { // doesn't exist
+            throw new RuntimeException("couldn't find file for pitch: " + this.toString() + "\nBest guess was: " + drawableName);
+        }
+
+        return drawableId;
     }
 
     public Pitch copy() {

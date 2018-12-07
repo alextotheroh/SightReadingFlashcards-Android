@@ -9,8 +9,8 @@ import lombok.Getter;
 
 public class PitchFlashcards {
 
-    private static final Pitch flashcardRangeBegin = new Pitch("G", "n", 3, 196.00);
-    private static final Pitch flashcardRangeEnd = new Pitch("G", "n", 6, 1567.98);
+    private static final Pitch flashcardRangeBegin = new Pitch("D", "s", 4, 311.13);
+    private static final Pitch flashcardRangeEnd = new Pitch("F", "s", 5, 739.99);
 
     private Random random = new Random();
 
@@ -47,7 +47,6 @@ public class PitchFlashcards {
                     inRange = true;
                     pitchFlashcards.add(detectablePitches.get(i));
                 }
-
             }
         }
 
