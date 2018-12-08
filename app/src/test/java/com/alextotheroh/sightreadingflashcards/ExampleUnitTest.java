@@ -1,4 +1,4 @@
-package com.alextotheroh.sitereadingflashcards;
+package com.alextotheroh.sightreadingflashcards;
 
 import org.junit.Test;
 

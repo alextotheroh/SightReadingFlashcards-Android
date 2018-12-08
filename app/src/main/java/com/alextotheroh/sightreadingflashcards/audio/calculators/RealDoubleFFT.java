@@ -1,4 +1,4 @@
-package com.alextotheroh.sitereadingflashcards.audio.calculators;
+package com.alextotheroh.sightreadingflashcards.audio.calculators;
 
 public class RealDoubleFFT {
 

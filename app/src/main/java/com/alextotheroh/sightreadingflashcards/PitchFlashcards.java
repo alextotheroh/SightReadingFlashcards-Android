@@ -1,4 +1,4 @@
-package com.alextotheroh.sitereadingflashcards;
+package com.alextotheroh.sightreadingflashcards;
 
 import android.util.Log;
 
@@ -9,7 +9,7 @@ import lombok.Getter;
 
 public class PitchFlashcards {
 
-    private static final Pitch flashcardRangeBegin = new Pitch("D", "s", 4, 311.13);
+    private static final Pitch flashcardRangeBegin = new Pitch("E", "f", 4, 311.13);
     private static final Pitch flashcardRangeEnd = new Pitch("F", "s", 5, 739.99);
 
     private Random random = new Random();

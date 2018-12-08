@@ -1,6 +1,6 @@
-package com.alextotheroh.sitereadingflashcards.audio;
+package com.alextotheroh.sightreadingflashcards.audio;
 
-import com.alextotheroh.sitereadingflashcards.Pitch;
+import com.alextotheroh.sightreadingflashcards.Pitch;
 
 import java.util.ArrayList;
 

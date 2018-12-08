@@ -1,6 +1,4 @@
-package com.alextotheroh.sitereadingflashcards.audio.calculators;
-
-import android.util.Log;
+package com.alextotheroh.sightreadingflashcards.audio.calculators;
 
 public class AudioCalculator {
 

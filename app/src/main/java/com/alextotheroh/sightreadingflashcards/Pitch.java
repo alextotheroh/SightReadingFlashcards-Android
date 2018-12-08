@@ -1,8 +1,7 @@
-package com.alextotheroh.sitereadingflashcards;
+package com.alextotheroh.sightreadingflashcards;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.opencsv.CSVReader;
@@ -103,6 +102,10 @@ public class Pitch {
         }
 
         return drawableId;
+    }
+
+    public boolean isNaturalNote() {
+        return this.modifier.equals("n");
     }
 
     public Pitch copy() {

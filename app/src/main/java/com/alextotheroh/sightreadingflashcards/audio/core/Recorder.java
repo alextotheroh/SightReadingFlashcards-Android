@@ -1,4 +1,4 @@
-package com.alextotheroh.sitereadingflashcards.audio.core;
+package com.alextotheroh.sightreadingflashcards.audio.core;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;

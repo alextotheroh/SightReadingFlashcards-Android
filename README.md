@@ -1,4 +1,4 @@
-# SiteReadingFlashcards-Android
+# SightReadingFlashcards-Android
 
 ## Common tasks
 ### Adding more note flashcards
