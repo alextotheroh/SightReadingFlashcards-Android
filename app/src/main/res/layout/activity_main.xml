@@ -38,4 +38,20 @@
         android:textColor="#FF0000"
         app:layout_constraintTop_toTopOf="@+id/sheetMusicBackground" />
 
+    <TextView
+        android:id="@+id/sharpOrFlatText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeStepGranularity="2sp"
+        android:text="sharpOrFlatText"
+        android:textColor="#FF0000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sheetMusicBackground" />
+
 </android.support.constraint.ConstraintLayout>

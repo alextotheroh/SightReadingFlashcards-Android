@@ -37,6 +37,7 @@ public class MainActivity extends Activity {
     private ImageView noteImgView;
     private ImageView sheetMusicImageView;
     private TextView freqText;
+    private TextView sharpOrFlatHelperTextView;
 
     private ArrayList<Pitch> detectablePitches;
     private DetectedPitchesBuffer detectedPitchesBuffer = new DetectedPitchesBuffer();
@@ -58,6 +59,7 @@ public class MainActivity extends Activity {
         noteImgView = findViewById(R.id.noteImg);
         sheetMusicImageView = findViewById(R.id.sheetMusicBackground);
         freqText = findViewById(R.id.freqText);
+        sharpOrFlatHelperTextView = findViewById(R.id.sharpOrFlatText);
 
         detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
         pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
@@ -80,8 +82,7 @@ public class MainActivity extends Activity {
         @Override
         public void onBufferAvailable(byte[] buffer) {
             audioCalculator.setBytes(buffer);
-            int amplitude = audioCalculator.getAmplitude();
-            double decibel = audioCalculator.getDecibel();
+
             final double frequency = audioCalculator.getFrequency();
 
             handler.post(new Runnable() {
@@ -97,8 +98,11 @@ public class MainActivity extends Activity {
                         // TODO if performed pitch was correct pitch, then play success sound and change flashcard
                         if (performedPitch.equals(pitchToPerform)) {
                             correctPitchWasPerformed();
+                        } else if (performedPitch.isFlatOf(pitchToPerform)) {
+                            sharpOrFlatHelperTextView.setText("You're flat");
+                        } else if (performedPitch.isSharpOf(pitchToPerform)) {
+                            sharpOrFlatHelperTextView.setText("You're sharp");
                         }
-                        //TODO if wrong pitch was performed, play buzzer sound, display if flat or sharp
                     }
                 }
             });

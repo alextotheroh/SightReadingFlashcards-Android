@@ -9,9 +9,9 @@ import com.opencsv.CSVReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -120,6 +120,133 @@ public class Pitch {
 
     public boolean isFlatNote() {
         return this.modifier.equals("f");
+    }
+
+    public boolean isFlatOf(Pitch other) {
+        if (this.getNumber() < other.getNumber()) {
+            return true;
+        }
+        if (this.getNumber() > other.getNumber()) {
+            return false;
+        }
+
+        String[] flatterThan;
+        String[] sharperThan;
+        List flatterThanList;
+        List sharperThanList;
+
+        switch (this.getNote()) {
+            case "c":
+                if (!other.getNote().equals("c")) {
+                    return true;
+                }
+                // else we are comparing some c with some c
+                return modifierFlatterThan(this.getModifier(), other.getModifier());
+            case "d":
+                // assuming same number
+                flatterThan = new String[]{"e", "f", "g", "a", "b"};
+                sharperThan = new String[]{"c"};
+                flatterThanList = new ArrayList<String>(Arrays.asList(flatterThan));
+                sharperThanList = new ArrayList<String>(Arrays.asList(sharperThan));
+
+                if ( flatterThanList.contains(other.getNote()) ) {
+                    return true;
+                }
+                if ( sharperThanList.contains(other.getNote()) ) {
+                    return false;
+                }
+                // else we are comparing same notes and numbers, different modifiers
+                return modifierFlatterThan(this.getModifier(), other.getModifier());
+            case "e":
+                // assuming same number
+                flatterThan = new String[]{"f", "g", "a", "b"};
+                sharperThan = new String[]{"c", "d"};
+                flatterThanList = new ArrayList<String>(Arrays.asList(flatterThan));
+                sharperThanList = new ArrayList<String>(Arrays.asList(sharperThan));
+
+                if ( flatterThanList.contains(other.getNote()) ) {
+                    return true;
+                }
+                if ( sharperThanList.contains(other.getNote()) ) {
+                    return false;
+                }
+                // else we are comparing same notes and numbers, different modifiers
+                return modifierFlatterThan(this.getModifier(), other.getModifier());
+            case "f":
+                // assuming same number
+                flatterThan = new String[]{"g", "a", "b"};
+                sharperThan = new String[]{"c", "d", "e"};
+                flatterThanList = new ArrayList<String>(Arrays.asList(flatterThan));
+                sharperThanList = new ArrayList<String>(Arrays.asList(sharperThan));
+
+                if ( flatterThanList.contains(other.getNote()) ) {
+                    return true;
+                }
+                if ( sharperThanList.contains(other.getNote()) ) {
+                    return false;
+                }
+                // else we are comparing same notes and numbers, different modifiers
+                return modifierFlatterThan(this.getModifier(), other.getModifier());
+            case "g":
+                // assuming same number
+                flatterThan = new String[]{"a", "b"};
+                sharperThan = new String[]{"c", "d", "e", "f"};
+                flatterThanList = new ArrayList<String>(Arrays.asList(flatterThan));
+                sharperThanList = new ArrayList<String>(Arrays.asList(sharperThan));
+
+                if ( flatterThanList.contains(other.getNote()) ) {
+                    return true;
+                }
+                if ( sharperThanList.contains(other.getNote()) ) {
+                    return false;
+                }
+                // else we are comparing same notes and numbers, different modifiers
+                return modifierFlatterThan(this.getModifier(), other.getModifier());
+            case "a":
+                // assuming same number
+                flatterThan = new String[]{"b"};
+                sharperThan = new String[]{"c", "d", "e", "f", "g"};
+                flatterThanList = new ArrayList<String>(Arrays.asList(flatterThan));
+                sharperThanList = new ArrayList<String>(Arrays.asList(sharperThan));
+
+                if ( flatterThanList.contains(other.getNote()) ) {
+                    return true;
+                }
+                if ( sharperThanList.contains(other.getNote()) ) {
+                    return false;
+                }
+                // else we are comparing same notes and numbers, different modifiers
+                return modifierFlatterThan(this.getModifier(), other.getModifier());
+            case "b":
+                if (!other.getNote().equals("b")) {
+                    return false;
+                }
+                // else we are comparing some b with some b
+                return modifierFlatterThan(this.getModifier(), other.getModifier());
+            default:
+                throw new RuntimeException("Invalid note for pitch: " + this.toString());
+        }
+    }
+
+    public boolean isSharpOf(Pitch p) {
+        return ( !this.isFlatOf(p) && !this.isExactSameNote(p) );
+    }
+
+    private static boolean modifierFlatterThan(String m1, String m2) {
+        switch (m1) {
+            case "n":
+                return m2.equals("s");
+            case "s":
+                return false;
+            case "f":
+                return ( m2.equals("n") || m2.equals("s") );
+            default:
+                throw new RuntimeException("Invalid modifier value: " + m1);
+        }
+    }
+
+    private static boolean modifierSharperThan(String m1, String m2) {
+        return !modifierFlatterThan(m1, m2) && !m1.equals(m2);
     }
 
     public Pitch copy() {
