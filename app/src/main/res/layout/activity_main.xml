@@ -28,4 +28,14 @@
         app:layout_constraintEnd_toEndOf="@+id/sheetMusicBackground"
         app:layout_constraintStart_toStartOf="@+id/sheetMusicBackground" />
 
+    <TextView
+        android:id="@+id/freqText"
+        android:layout_width="1000dp"
+        android:layout_height="500dp"
+        android:background="@android:color/transparent"
+        android:textSize="20sp"
+        android:text="placeholder"
+        android:textColor="#FF0000"
+        app:layout_constraintTop_toTopOf="@+id/sheetMusicBackground" />
+
 </android.support.constraint.ConstraintLayout>

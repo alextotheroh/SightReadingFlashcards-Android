@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alextotheroh.sightreadingflashcards.audio.DetectedPitchesBuffer;
@@ -35,6 +36,7 @@ public class MainActivity extends Activity {
 
     private ImageView noteImgView;
     private ImageView sheetMusicImageView;
+    private TextView freqText;
 
     private ArrayList<Pitch> detectablePitches;
     private DetectedPitchesBuffer detectedPitchesBuffer = new DetectedPitchesBuffer();
@@ -55,6 +57,7 @@ public class MainActivity extends Activity {
 
         noteImgView = findViewById(R.id.noteImg);
         sheetMusicImageView = findViewById(R.id.sheetMusicBackground);
+        freqText = findViewById(R.id.freqText);
 
         detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
         pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
@@ -81,16 +84,12 @@ public class MainActivity extends Activity {
             double decibel = audioCalculator.getDecibel();
             final double frequency = audioCalculator.getFrequency();
 
-            final String amp = String.valueOf(amplitude) + " Amp";
-            final String db = String.valueOf(decibel) + " db";
-            final String hz = String.valueOf(frequency) + " Hz";
-
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     closestPitch = Pitch.getClosestPitchForFrequency(frequency, detectablePitches);
                     detectedPitchesBuffer.add(closestPitch);
-                    Log.i(APP_LOG_TAG, "pitch detected: " + closestPitch.toString());
+                    freqText.setText("To play: " + pitchToPerform.toString() + "\nDetected: " + closestPitch.toString());
 
                     if (detectedPitchesBuffer.pitchWasPerformed()) {
                         performedPitch = closestPitch.copy();

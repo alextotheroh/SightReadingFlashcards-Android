@@ -9,8 +9,8 @@ import lombok.Getter;
 
 public class PitchFlashcards {
 
-    private static final Pitch flashcardRangeBegin = new Pitch("E", "f", 4, 311.13);
-    private static final Pitch flashcardRangeEnd = new Pitch("F", "s", 5, 739.99);
+    private static final Pitch flashcardRangeBegin = new Pitch("e", "f", 4, 311.13);
+    private static final Pitch flashcardRangeEnd = new Pitch("f", "s", 5, 739.99);
 
     private Random random = new Random();
 
@@ -43,7 +43,7 @@ public class PitchFlashcards {
 
             } else { // not yet in range
 
-                if (detectablePitches.get(i).equals(flashcardRangeBegin)) {
+                if (detectablePitches.get(i).isExactSameNote(flashcardRangeBegin)) {
                     inRange = true;
                     pitchFlashcards.add(detectablePitches.get(i));
                 }
