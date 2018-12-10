@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView noteImgView;
     private ImageView sheetMusicImageView;
-    private TextView freqText;
+    private TextView freqText; // useful for debugging, see freqText.setText() below
     private TextView sharpOrFlatHelperTextView;
 
     private ArrayList<Pitch> detectablePitches;
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     closestPitch = Pitch.getClosestPitchForFrequency(frequency, detectablePitches);
                     detectedPitchesBuffer.add(closestPitch);
-                    freqText.setText("To play: " + pitchToPerform.toString() + "\nDetected: " + closestPitch.toString());
+                    //freqText.setText("To play: " + pitchToPerform.toString() + "\nDetected: " + closestPitch.toString());
 
                     if (hintTextIsDisplaying &&
                             (System.currentTimeMillis() - timeLastSetHintText) >= HINT_TEXT_DISPLAY_TIME_MILIS) {
