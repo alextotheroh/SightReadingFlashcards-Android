@@ -34,7 +34,7 @@
         android:layout_height="500dp"
         android:background="@android:color/transparent"
         android:textSize="20sp"
-        android:text=""
+        android:text="placeholder"
         android:textColor="#FF0000"
         app:layout_constraintTop_toTopOf="@+id/sheetMusicBackground" />
 
@@ -46,7 +46,7 @@
         android:gravity="center"
         android:autoSizeTextType="uniform"
         app:autoSizeTextType="uniform"
-        android:text="sharpOrFlatText"
+        android:text=""
         android:textColor="#4C90F7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

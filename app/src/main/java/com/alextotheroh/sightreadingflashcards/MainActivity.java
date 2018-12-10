@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -42,6 +44,7 @@ public class MainActivity extends Activity {
     private ArrayList<Pitch> detectablePitches;
     private DetectedPitchesBuffer detectedPitchesBuffer = new DetectedPitchesBuffer();
     private PitchFlashcards pitchFlashcards;
+    private MediaPlayer successSoundPlayer;
 
     private Pitch closestPitch = new Pitch("C", "n", 4, 261.63);
 
@@ -64,6 +67,7 @@ public class MainActivity extends Activity {
         sheetMusicImageView = findViewById(R.id.sheetMusicBackground);
         freqText = findViewById(R.id.freqText);
         sharpOrFlatHelperTextView = findViewById(R.id.sharpOrFlatText);
+        successSoundPlayer = MediaPlayer.create(this, R.raw.success_sound);
 
         detectablePitches = Pitch.getPitchArrayFromCSV(this, getAssets());
         pitchFlashcards = PitchFlashcards.getPitchFlashcardsFromDetectablePitchesArray(detectablePitches);
@@ -124,10 +128,29 @@ public class MainActivity extends Activity {
     };
 
     private void correctPitchWasPerformed() {
-        Toast successToast = Toast.makeText(this, "Correct note was played!", Toast.LENGTH_SHORT);
+        playSuccessSound();
+        Toast successToast = Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT);
         successToast.show();
         this.pitchToPerform = pitchFlashcards.getNextCard();
         updateNoteImage();
+    }
+
+    private void playSuccessSound() {
+        if (successSoundPlayer == null) {
+            successSoundPlayer = MediaPlayer.create(this, R.raw.success_sound);
+        }
+
+        successSoundPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                if (successSoundPlayer != null) {
+                    successSoundPlayer.release();
+                    successSoundPlayer = null;
+                }
+            }
+        });
+
+        successSoundPlayer.start();
     }
 
     private void setNoteImageViewSize(int sheetMusicImgWidth, int sheetMusicImgHeight, Pitch pitchToPerform) {
