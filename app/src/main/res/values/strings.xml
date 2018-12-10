@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SightReadingFlashCards-Android</string>
+    <string name="app_name">Sight Reading Flashcards</string>
     <string-array name="tuner_spinner_values">
         <item>A</item>
         <item>B</item>
