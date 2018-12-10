@@ -50,6 +50,10 @@ public class MainActivity extends Activity {
     private Pitch performedPitch = new Pitch("C", "n", 4, 261.63);
     private Pitch pitchToPerform;
 
+    private long timeLastSetHintText = 0;
+    private boolean hintTextIsDisplaying = false;
+    private final long HINT_TEXT_DISPLAY_TIME_MILIS = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +96,12 @@ public class MainActivity extends Activity {
                     detectedPitchesBuffer.add(closestPitch);
                     freqText.setText("To play: " + pitchToPerform.toString() + "\nDetected: " + closestPitch.toString());
 
+                    if (hintTextIsDisplaying &&
+                            (System.currentTimeMillis() - timeLastSetHintText) >= HINT_TEXT_DISPLAY_TIME_MILIS) {
+                        sharpOrFlatHelperTextView.setText("");
+                        hintTextIsDisplaying = false;
+                    }
+
                     if (detectedPitchesBuffer.pitchWasPerformed()) {
                         performedPitch = closestPitch.copy();
 
@@ -100,8 +110,12 @@ public class MainActivity extends Activity {
                             correctPitchWasPerformed();
                         } else if (performedPitch.isFlatOf(pitchToPerform)) {
                             sharpOrFlatHelperTextView.setText("You're flat");
+                            timeLastSetHintText = System.currentTimeMillis();
+                            hintTextIsDisplaying = true;
                         } else if (performedPitch.isSharpOf(pitchToPerform)) {
                             sharpOrFlatHelperTextView.setText("You're sharp");
+                            timeLastSetHintText = System.currentTimeMillis();
+                            hintTextIsDisplaying = true;
                         }
                     }
                 }
