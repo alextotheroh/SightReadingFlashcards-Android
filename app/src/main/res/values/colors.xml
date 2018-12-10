@@ -27,4 +27,6 @@
     <color name="main_normal">#0099ff</color>
     <color name="main_dark">#1281c1</color>
     <color name="main_dark_extreme">#145786</color>
+
+    <color name="app_bar_color">#fafafa</color>
 </resources>

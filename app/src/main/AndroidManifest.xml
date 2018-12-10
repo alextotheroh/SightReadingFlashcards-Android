@@ -10,10 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:screenOrientation="userLandscape"
         android:theme="@style/Theme.AppCompat.NoActionBar" >
 
-        <activity android:name="com.alextotheroh.sightreadingflashcards.MainActivity">
+        <activity
+            android:name="com.alextotheroh.sightreadingflashcards.MainActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,7 +22,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.alextotheroh.sightreadingflashcards.TunerActivity">
+        <activity
+            android:name="com.alextotheroh.sightreadingflashcards.TunerActivity"
+            android:screenOrientation="landscape">
         </activity>
 
         <meta-data
