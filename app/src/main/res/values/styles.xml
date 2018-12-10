@@ -6,4 +6,9 @@
         <item name="android:navigationBarColor">@color/gray_8</item>
     </style>
 
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@font/fredoka_one</item>
+        <item name="android:backgroundTint">#fafafa</item>
+    </style>
+
 </resources>

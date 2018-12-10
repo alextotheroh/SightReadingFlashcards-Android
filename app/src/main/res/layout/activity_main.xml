@@ -6,13 +6,23 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/app_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ToolbarTheme"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <ImageView
         android:id="@+id/sheetMusicBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="150dp"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:adjustViewBounds="true"
         android:src="@drawable/sheet_music_background" />
@@ -43,7 +53,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:autoSizeTextType="uniform"
-        android:background="@drawable/temp_debug_border"
         android:fontFamily="@font/fredoka_one"
         android:gravity="center"
         android:textColor="#8FEEFC"
@@ -51,6 +60,6 @@
         app:layout_constraintBottom_toTopOf="@+id/sheetMusicBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/app_toolbar" />
 
 </android.support.constraint.ConstraintLayout>
